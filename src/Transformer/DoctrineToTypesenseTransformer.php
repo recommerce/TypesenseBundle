@@ -63,6 +63,10 @@ class DoctrineToTypesenseTransformer extends AbstractTransformer
                 }
             }
 
+            if ($value === null) {
+                return [];
+            }
+
             $name = $fieldsInfo['name'];
 
             $data[$name] = $this->castValue(
