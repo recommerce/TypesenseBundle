@@ -40,7 +40,7 @@ class DoctrineToTypesenseTransformer extends AbstractTransformer
                 break;
             }
         }
-        
+
 
         if (!isset($this->entityToCollectionMapping[$entityClass])) {
             throw new \Exception(sprintf('Class %s is not supported for Doctrine To Typesense Transformation', $entityClass));
@@ -102,7 +102,12 @@ class DoctrineToTypesenseTransformer extends AbstractTransformer
                 if ($isOptional == true && $value == null) {
                     return null;
                 }
-                return $value->__toString();
+
+                if (!is_array($value) && $value instanceof \JsonSerializable) {
+                    return null;
+                }
+
+                return $value;
             case self::TYPE_COLLECTION.self::TYPE_ARRAY_STRING:
                 return array_values(
                     $value->map(function ($v) use($isOptional) {
