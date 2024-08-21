@@ -135,7 +135,7 @@ class ImportCommand extends Command
         $nbEntities = (int) $this->em->createQuery('select COUNT(u.id) from '.$class.' u')->getSingleScalarResult();
 
         $nbPages = ceil($nbEntities / $maxPerPage);
-        
+
         if ($input->getOption('last-page')) {
             $lastPage = $input->getOption('last-page');
             if ($lastPage > $nbPages) {
@@ -165,7 +165,12 @@ class ImportCommand extends Command
 
             $data = [];
             foreach ($entities as $entity) {
-                $data[] = $this->transformer->convert($entity);
+                $convertedData = $this->transformer->convert($entity);
+                if (empty($convertedData)) {
+                    continue;
+                }
+
+                $data[] = $convertedData;
             }
 
             $io->text('Import <info>['.$collectionName.'] '.$class.'</info> Page '.$i.' of '.$lastPage.' ('.count($data).' items)');
