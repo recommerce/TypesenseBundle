@@ -26,7 +26,7 @@ class DocumentManager
 
     public function index($collection, $data)
     {
-        if (!$this->client->isOperationnal()) {
+        if (!$this->client->isOperationnal() || empty($data)) {
             return null;
         }
 
