@@ -45,6 +45,10 @@ class TypesenseIndexer
         $collection = $this->getCollectionName($entity);
         $data       = $this->transformer->convert($entity);
 
+        if (empty($data)) {
+            return;
+        }
+
         $this->documentsToIndex[] = [$collection, $data];
     }
 
@@ -63,6 +67,10 @@ class TypesenseIndexer
 
         $collection = $this->getCollectionName($entity);
         $data       = $this->transformer->convert($entity);
+
+        if (empty($data)) {
+            return;
+        }
 
         $this->documentsToUpdate[] = [$collection, $data['id'], $data];
     }
